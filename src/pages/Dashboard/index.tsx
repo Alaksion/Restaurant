@@ -36,10 +36,12 @@ const Dashboard: React.FC = () => {
     food: Omit<IFoodPlate, 'id' | 'available'>,
   ): Promise<void> {
     try {
-      const lastId = foods[foods.length - 1].id;
-      const newFood = Object.assign(food, { available: true, id: lastId + 1 });
-      foods.push(newFood);
-      setFoods([...foods]);
+      const response = await api.post('/foods', {
+        ...food,
+        available: true,
+      });
+
+      setFoods([...foods, response.data]);
     } catch (err) {
       console.log(err);
     }
